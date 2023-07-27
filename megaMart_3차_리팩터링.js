@@ -70,3 +70,61 @@ function update_tax_dom(total) {
 function calc_tax(amount) {
   return amount * 0.1;
 }
+
+// 범용 함수
+function removeItems(array, idx, count) {
+  let copy = array.slice();
+  copy.splice(idx, count);
+  return copy;
+}
+
+// function remove_item_by_name(cart, name) {
+//   let new_cart = cart.slice();
+//   let idx = null;
+//   for (let i = 0; i < new_cart.length; i++) {
+//     if (new_cart[i].name === name) idx = i;
+//   }
+//   if (idx !== null) new_cart.splice(idx, 1);
+//   return new_cart;
+// }
+
+function remove_item_by_name(cart, name) {
+  // let new_cart = cart.slice(); // 사용하는 함수에서 깊은복사하고 있어서 별도로 복사안해줘도 된다.
+  let idx = null;
+  for (let i = 0; i < cart.length; i++) {
+    if (cart[i].name === name) idx = i;
+  }
+  if (idx !== null) return removeItems(cart, idx, 1);
+  return cart;
+}
+
+// function delete_handler(name) {
+//   remove_item_by_name(shopping_cart, name);
+//   let total = calc_total(shopping_cart);
+//   set_cart_total_dom(total);
+//   update_shipping_icons(shopping_cart);
+//   update_tax_dom(total);
+// }
+
+// 카피온라이트 적용하기
+function delete_handler(name) {
+  shopping_cart = remove_item_by_name(shopping_cart, name);
+  let total = calc_total(shopping_cart);
+  set_cart_total_dom(total);
+  update_shipping_icons(shopping_cart);
+  update_tax_dom(total);
+}
+
+let mailing_list = [];
+
+function add_contact(mailing_list, email) {
+  let list_copy = mailing_list.slice();
+  list_copy.push(email);
+  return list_copy;
+}
+
+function submit_form_handler(event) {
+  let form = event.target;
+  let email = form.elements["email"].value;
+  mailing_list = add_contact(email);
+}
